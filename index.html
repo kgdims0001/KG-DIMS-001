@@ -1,65 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KG^DIMS¥ — Demo Store</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <!-- Intro / Animation -->
-  <div id="introPopup" class="popup">
-    <div class="popup-card">
-      <h1>KG^DIMS¥</h1>
-      <p id="typedArea"></p>
-      <button id="continueBtn" class="btn primary">Continue to Site</button>
-    </div>
-  </div>
+<!-- Purchase Modal -->
+<div id="purchaseModal" class="modal" aria-hidden="true">
+  <div class="modal-content">
+    <button id="closeModal" class="modal-close">×</button>
+    <h3 id="purchaseTitle">Purchase</h3>
 
-  <!-- Main Content -->
-  <div id="siteWrap" aria-hidden="true">
-    <header>
-      <h2>KG^DIMS¥ — Premium Digital Products</h2>
-    </header>
-
-    <main>
-      <section class="products">
-        <h3>Available Services</h3>
-
-        <!-- Proxy -->
-        <div class="card">
-          <h4>Proxy — Unlimited Edition</h4>
-          <p class="desc">Showcase account: Unlimited Diamonds, Level 100, Unlimited Skins, Unlimited Emotes.</p>
-          <button class="btn buy-btn" data-product="Proxy" data-price="7000" data-video="https://youtube.com/shorts/MEnpOvFZmj4?si=tUoL-kJry_5U7-Jd">Buy Proxy</button>
-        </div>
-
-        <!-- Headshot -->
-        <div class="card">
-          <h4>Headshot-Only Account</h4>
-          <p class="desc">Guest-login account tuned for headshot precision and smooth shooting.</p>
-          <button class="btn buy-btn" data-product="Headshot" data-price="6000" data-video="https://youtu.be/sUyxVAMjHFA?feature=shared">Buy Headshot</button>
-        </div>
-      </section>
-
-      <!-- Bank Selection Modal -->
-      <div id="bankModal" class="modal">
-        <div class="modal-content">
-          <h3>Select Bank for Payment</h3>
-          <button class="bank-btn" data-bank="moniepoint">Moniepoint</button>
-          <button class="bank-btn" data-bank="kuda">Kuda</button>
-          <button class="bank-btn" data-bank="palmpay">Palmpay</button>
-          <div id="accountDetails" class="account-details"></div>
-          <button id="confirmTransfer" class="btn primary">I've Made Transfer</button>
-        </div>
+    <form id="purchaseForm">
+      <div class="form-row">
+        <label>Your Name for Verification</label>
+        <input id="payerName" type="text" placeholder="Enter your name">
       </div>
 
-      <!-- YouTube Video Section -->
-      <section id="videoSection">
-        <iframe id="productVideo" width="100%" height="360" src="" frameborder="0" allowfullscreen></iframe>
-      </section>
-    </main>
-  </div>
+      <div class="form-row">
+        <label>Price</label>
+        <input id="priceInput" type="text" readonly>
+      </div>
 
-<script src="script.js"></script>
-</body>
-</html>
+      <div class="form-row">
+        <label>Select Bank</label>
+        <select id="bankSelect">
+          <option value="">--Select--</option>
+          <option value="kuda">Kuda Microfinance Bank</option>
+          <option value="moniepoint">Moniepoint MFB</option>
+          <option value="palmpay">Palmpay</option>
+        </select>
+      </div>
+
+      <div id="accountDetails" class="account-details" style="display:none;">
+        <p id="kudaDetails" style="display:none;">
+          Account Number: 2081794843<br>
+          Account Name: DUMOYE, DESTINY ABDUL QUADRI<br>
+          WhatsApp: +234 915 388 2605
+        </p>
+
+        <p id="moniepointDetails" style="display:none;">
+          Account Number: 9014690789<br>
+          Account Name: ABDUL QUADRI DESTINY DUMOYE<br>
+          WhatsApp: +234 915 388 2605
+        </p>
+
+        <p id="palmpayDetails" style="display:none;">
+          Account Number: 9030516292<br>
+          Account Name: MIRACLE CHIKA<br>
+          WhatsApp: +234 915 952 9768
+        </p>
+      </div>
+
+      <button type="button" id="showAccountBtn" class="btn primary">Show Account Number</button>
+      <button type="button" id="submitTransaction" class="btn primary">I've Made the Transfer</button>
+    </form>
+
+    <div id="countdownAnimation" class="countdown" style="display:none;">
+      <p>Countdown: <span id="countNumber">20</span></p>
+    </div>
+  </div>
+</div>
