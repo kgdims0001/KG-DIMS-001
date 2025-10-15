@@ -1,56 +1,91 @@
-<!-- Purchase Modal -->
-<div id="purchaseModal" class="modal" aria-hidden="true">
-  <div class="modal-content">
-    <button id="closeModal" class="modal-close">×</button>
-    <h3 id="purchaseTitle">Purchase</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KG DIMS – Game Store</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-    <form id="purchaseForm">
-      <div class="form-row">
-        <label>Your Name for Verification</label>
-        <input id="payerName" type="text" placeholder="Enter your name">
+  <!-- LOADER -->
+  <div id="loader">
+    <h1>KG DIMS Loading...</h1>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="main-content" style="display:none;">
+    <header>
+      <h1>🎮 KG DIMS Game Market</h1>
+      <p class="tagline">We sell premium Nigerian Game Mods, Proxy, and Backoff modes</p>
+    </header>
+
+    <!-- GAME VIDEO SECTION -->
+    <section class="video-section">
+      <h2>🎥 Watch Game Preview</h2>
+      <iframe width="100%" height="315" 
+        src="https://www.youtube.com/embed/sUyxVAMjHFA"
+        title="Game Preview"
+        frameborder="0"
+        allowfullscreen></iframe>
+      <p class="note">Subscribe and watch the full demo to see how our game works.</p>
+    </section>
+
+    <!-- PRODUCT SECTION -->
+    <section class="products">
+      <div class="product">
+        <h3>Buy Game</h3>
+        <p>Price: ₦7,000</p>
+        <button class="open-modal">Buy Game</button>
       </div>
 
-      <div class="form-row">
-        <label>Price</label>
-        <input id="priceInput" type="text" readonly>
+      <div class="product">
+        <h3>Buy Proxy</h3>
+        <p>Price: ₦5,000</p>
+        <iframe width="100%" height="215"
+          src="https://www.youtube.com/embed/MEnpOvFZmj4"
+          title="Proxy Preview"
+          frameborder="0"
+          allowfullscreen></iframe>
+        <button class="open-modal">Buy Proxy</button>
+      </div>
+    </section>
+
+    <footer>
+      <p>More Games Coming Soon: Free Fire available, others in progress 🚀</p>
+    </footer>
+  </div>
+
+  <!-- PURCHASE MODAL -->
+  <div id="purchase-modal" class="modal">
+    <div class="modal-content">
+      <span id="modal-close">&times;</span>
+      <h2>Purchase</h2>
+
+      <label>Your Name for Verification</label>
+      <input type="text" id="user-name" placeholder="Enter your name">
+
+      <label>Price</label>
+      <p class="price">₦7,000</p>
+
+      <label>Select Bank</label>
+      <select id="bank-select">
+        <option value="">--Select--</option>
+        <option value="kuda">Kuda</option>
+        <option value="moniepoint">Moniepoint</option>
+        <option value="palmpay">Palmpay</option>
+      </select>
+
+      <div id="account-details"></div>
+
+      <div class="buttons">
+        <button id="submit-transaction">I've Made the Transfer</button>
       </div>
 
-      <div class="form-row">
-        <label>Select Bank</label>
-        <select id="bankSelect">
-          <option value="">--Select--</option>
-          <option value="kuda">Kuda Microfinance Bank</option>
-          <option value="moniepoint">Moniepoint MFB</option>
-          <option value="palmpay">Palmpay</option>
-        </select>
-      </div>
-
-      <div id="accountDetails" class="account-details" style="display:none;">
-        <p id="kudaDetails" style="display:none;">
-          Account Number: 2081794843<br>
-          Account Name: DUMOYE, DESTINY ABDUL QUADRI<br>
-          WhatsApp: +234 915 388 2605
-        </p>
-
-        <p id="moniepointDetails" style="display:none;">
-          Account Number: 9014690789<br>
-          Account Name: ABDUL QUADRI DESTINY DUMOYE<br>
-          WhatsApp: +234 915 388 2605
-        </p>
-
-        <p id="palmpayDetails" style="display:none;">
-          Account Number: 9030516292<br>
-          Account Name: MIRACLE CHIKA<br>
-          WhatsApp: +234 915 952 9768
-        </p>
-      </div>
-
-      <button type="button" id="showAccountBtn" class="btn primary">Show Account Number</button>
-      <button type="button" id="submitTransaction" class="btn primary">I've Made the Transfer</button>
-    </form>
-
-    <div id="countdownAnimation" class="countdown" style="display:none;">
-      <p>Countdown: <span id="countNumber">20</span></p>
+      <p id="countdown"></p>
     </div>
   </div>
-</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
