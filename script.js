@@ -1,76 +1,80 @@
-// Popup
-const popup = document.getElementById('popup');
-const popupBtn = document.getElementById('popupBtn');
-popupBtn.addEventListener('click', () => popup.style.display = 'none');
+// Intro typed animation
+const introLines = [
+  "Welcome to KG^DIMS¥ — the official gaming & services store.",
+  "Premium digital packages and showcase accounts for serious players.",
+  "Choose a product, select a bank, then contact admin to complete payment."
+];
 
-// Modal
+const typedArea = document.getElementById('typedArea');
+let i = 0, j = 0;
+function runTyped() {
+  if (i < introLines.length) {
+    if (j < introLines[i].length) {
+      typedArea.textContent += introLines[i][j];
+      j++;
+      setTimeout(runTyped, 25);
+    } else {
+      typedArea.textContent += '\n';
+      i++; j=0;
+      setTimeout(runTyped, 700);
+    }
+  }
+}
+runTyped();
+
+// Popup / Continue
+const continueBtn = document.getElementById('continueBtn');
+const introPopup = document.getElementById('introPopup');
+const siteWrap = document.getElementById('siteWrap');
+
+continueBtn.addEventListener('click', () => {
+  introPopup.style.display = 'none';
+  siteWrap.setAttribute('aria-hidden','false');
+});
+
+// Buy buttons
 const buyButtons = document.querySelectorAll('.buy-btn');
-const modal = document.getElementById('bankModal');
-const modalClose = document.getElementById('modalClose');
-const bankSelect = document.getElementById('bankSelect');
-const confirmBank = document.getElementById('confirmBank');
+const bankModal = document.getElementById('bankModal');
 const accountDetails = document.getElementById('accountDetails');
-const bankInfo = document.getElementById('bankInfo');
+const confirmTransfer = document.getElementById('confirmTransfer');
+const productVideo = document.getElementById('productVideo');
 
-// Countdown
-const countdownOverlay = document.getElementById('countdownOverlay');
-const countdownNum = document.getElementById('countdownNum');
-
-let selectedProduct = '';
+let selectedBank = '';
+let currentProduct = '';
 
 buyButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    selectedProduct = btn.dataset.product;
-    bankSelect.value = '';
+    currentProduct = btn.dataset.product;
+    productVideo.src = btn.dataset.video;
+    bankModal.style.display = 'flex';
     accountDetails.style.display = 'none';
-    modal.style.display = 'flex';
   });
 });
 
-modalClose.addEventListener('click', () => modal.style.display = 'none');
+// Bank buttons
+const bankButtons = document.querySelectorAll('.bank-btn');
+bankButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedBank = btn.dataset.bank;
+    accountDetails.className = `account-details ${selectedBank}`;
+    let info = '';
+    if(selectedBank === 'moniepoint') info = 'Moniepoint MFB\nOwner: ABDUL QUADRI DESTINY DUMOYE\nWhatsApp: +2349153882605';
+    if(selectedBank === 'kuda') info = 'Kuda Bank\nOwner: DUMOYE, DESTINY ABDUL QUADRI\nWhatsApp: +2349153882605';
+    if(selectedBank === 'palmpay') info = 'Palmpay\nOwner: MIRACLE CHIKA\nWhatsApp: +2349159529768';
+    accountDetails.textContent = info;
+    accountDetails.style.display = 'block';
+  });
+});
 
-confirmBank.addEventListener('click', () => {
-  const bank = bankSelect.value;
-  if(!bank) return alert('Please select a bank');
-
-  // Show account details
-  let info = '';
-  let colorClass = '';
-  switch(bank){
-    case 'moniepoint':
-      info = 'Bank: Moniepoint\nAccount Name: ABDUL QUADRI DESTINY DUMOYE\nWhatsApp: +2349153882605';
-      colorClass = 'moniepoint';
-      break;
-    case 'palmpay':
-      info = 'Bank: Palmpay\nAccount Name: Miracle Chika\nWhatsApp: +2349159529768';
-      colorClass = 'palmpay';
-      break;
-    case 'kuda':
-      info = 'Bank: Kuda Microfinance\nAccount Name: DUMOYE, DESTINY ABDUL QUADRI\nWhatsApp: +2349153882605';
-      colorClass = 'kuda';
-      break;
-  }
-  accountDetails.className = `account-details ${colorClass}`;
-  bankInfo.textContent = info;
-  accountDetails.style.display = 'block';
-
-  // Start countdown animation
-  modal.style.display = 'none';
-  countdownOverlay.style.display = 'flex';
-  let count = 20;
-  countdownNum.textContent = count;
-  const interval = setInterval(() => {
-    count--;
-    countdownNum.textContent = count;
-    if(count <= 0){
-      clearInterval(interval);
-      countdownOverlay.style.display = 'none';
-      // Redirect to WhatsApp automatically
-      let phone = '';
-      if(bank === 'moniepoint') phone='+2349153882605';
-      else if(bank === 'palmpay') phone='+2349159529768';
-      else if(bank === 'kuda') phone='+2349153882605';
-      window.open(`https://wa.me/${phone}`, '_blank');
-    }
-  }, 1000);
+// Confirm transfer
+confirmTransfer.addEventListener('click', () => {
+  if(!selectedBank) { alert("Please select a bank."); return; }
+  let number = '';
+  if(selectedBank === 'moniepoint') number = '2349153882605';
+  if(selectedBank === 'kuda') number = '2349153882605';
+  if(selectedBank === 'palmpay') number = '2349159529768';
+  window.open(`https://wa.me/${number}?text=I have made transfer for ${currentProduct}`, '_blank');
+  bankModal.style.display = 'none';
+  accountDetails.style.display = 'none';
+  selectedBank = '';
 });
