@@ -1,120 +1,103 @@
-// === LOADER ===
-window.addEventListener("load", () => {
-  const loader = document.getElementById("loader");
-  const mainContent = document.getElementById("main-content");
+// ------------ Configuration ------------
+const BANKS = {
+  kuda: { color: "#7C4DFF", name: "Kuda Microfinance Bank", account: "2081794843", owner: "DUMOYE, DESTINY ABDUL QUADRI", whatsapp: "+2349153882605" },
+  moniepoint: { color: "#2196F3", name: "Moniepoint MFB", account: "9014690789", owner: "ABDUL QUADRI DESTINY DUMOYE", whatsapp: "+2349153882605" },
+  palmpay: { color: "#FF5722", name: "Palmpay", account: "9030516292", owner: "Miracle Chika", whatsapp: "+2349159529768" }
+};
 
-  setTimeout(() => {
-    loader.style.display = "none";
-    mainContent.style.display = "block";
-  }, 2000); // 2 seconds loader
-});
+// ------------ DOM Elements ------------
+const buyButtons = document.querySelectorAll(".buyBtn");
+const productInput = document.getElementById("productName");
+const priceInput = document.getElementById("priceInput");
+const nameInput = document.getElementById("verifName");
+const bankSelect = document.getElementById("bankSelect");
+const showAccountBtn = document.getElementById("showAccountBtn");
+const accountDetailsDiv = document.getElementById("accountDetails");
+const transferBtn = document.getElementById("transferBtn");
+const countdownOverlay = document.getElementById("countdownOverlay");
+const countdownNumber = document.getElementById("countNum");
+const youtubeFrame = document.getElementById("youtubeFrame");
 
-// === MODAL HANDLING ===
-const openModalBtns = document.querySelectorAll(".open-modal");
-const modal = document.getElementById("purchase-modal");
-const closeModalBtn = document.getElementById("modal-close");
+// ------------ State ------------
+let selectedProduct = null;
+let selectedPrice = null;
+let selectedBank = null;
 
-openModalBtns.forEach(btn => {
+// ------------ Buy button click ------------
+buyButtons.forEach(btn => {
   btn.addEventListener("click", () => {
-    modal.style.display = "flex";
-    resetPurchase();
+    selectedProduct = btn.dataset.product;
+    selectedPrice = btn.dataset.price;
+    productInput.value = selectedProduct;
+    priceInput.value = selectedPrice;
+    nameInput.value = "";
+    bankSelect.value = "";
+    accountDetailsDiv.innerHTML = "";
+    accountDetailsDiv.style.display = "none";
   });
 });
 
-closeModalBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-});
-
-// === BANK SELECTION ===
-const bankSelect = document.getElementById("bank-select");
-const accountDisplay = document.getElementById("account-details");
-const submitTransactionBtn = document.getElementById("submit-transaction");
-const countdownElement = document.getElementById("countdown");
-
-const bankInfo = {
-  kuda: {
-    name: "Kuda Microfinance Bank",
-    number: "2081794843",
-    owner: "DUMOYE, DESTINY ABDUL QUADRI",
-    whatsapp: "+2349153882605",
-    colorClass: "kuda"
-  },
-  moniepoint: {
-    name: "Moniepoint MFB",
-    number: "9014690789",
-    owner: "ABDUL QUADRI DESTINY DUMOYE",
-    whatsapp: "+2349153882605",
-    colorClass: "moniepoint"
-  },
-  palmpay: {
-    name: "Palmpay",
-    number: "9030516292",
-    owner: "Miracle Chika",
-    whatsapp: "+2349159529768",
-    colorClass: "palmpay"
-  }
-};
-
-// Reset function
-function resetPurchase() {
-  accountDisplay.innerHTML = "";
-  countdownElement.innerText = "";
-  bankSelect.value = "";
-}
-
-// Show account number after selecting bank
+// ------------ Bank select ------------
 bankSelect.addEventListener("change", () => {
-  const selectedBank = bankSelect.value;
-  if (!selectedBank) return;
-
-  const info = bankInfo[selectedBank];
-  accountDisplay.innerHTML = `
-    <div class="account-details ${info.colorClass}">
-      <p><strong>Bank:</strong> ${info.name}</p>
-      <p><strong>Account Number:</strong> ${info.number}</p>
-      <p><strong>Account Name:</strong> ${info.owner}</p>
-    </div>
-  `;
+  const bankKey = bankSelect.value;
+  selectedBank = BANKS[bankKey] || null;
+  if(selectedBank) {
+    bankSelect.style.backgroundColor = selectedBank.color;
+    bankSelect.style.color = "#fff";
+  } else {
+    bankSelect.style.backgroundColor = "";
+    bankSelect.style.color = "#000";
+  }
 });
 
-// === SUBMIT TRANSACTION ===
-submitTransactionBtn.addEventListener("click", () => {
-  const selectedBank = bankSelect.value;
-  const nameInput = document.getElementById("user-name").value.trim();
-
-  if (!nameInput) {
+// ------------ Show Account Number ------------
+showAccountBtn.addEventListener("click", () => {
+  if(!nameInput.value.trim()) {
     alert("Please enter your name for verification.");
     return;
   }
-
-  if (!selectedBank) {
-    alert("Please choose a bank first.");
+  if(!selectedBank) {
+    alert("Please select a bank first.");
     return;
   }
+  accountDetailsDiv.style.display = "block";
+  accountDetailsDiv.innerHTML = `
+    <p><strong>Bank:</strong> ${selectedBank.name}</p>
+    <p><strong>Account Number:</strong> ${selectedBank.account}</p>
+    <p><strong>Account Name:</strong> ${selectedBank.owner}</p>
+    <p><strong>WhatsApp:</strong> ${selectedBank.whatsapp}</p>
+  `;
+});
 
-  const info = bankInfo[selectedBank];
-
-  // Countdown from 20 → 1
-  let counter = 20;
-  countdownElement.innerText = `Processing: ${counter}`;
+// ------------ Transfer Button / Countdown ------------
+transferBtn.addEventListener("click", () => {
+  if(!nameInput.value.trim()) {
+    alert("Please enter your name for verification.");
+    return;
+  }
+  if(!selectedBank) {
+    alert("Please select a bank first.");
+    return;
+  }
+  // Start countdown
+  let seconds = 20; // realistic countdown
+  countdownNumber.textContent = seconds;
+  countdownOverlay.style.display = "flex";
 
   const interval = setInterval(() => {
-    counter--;
-    countdownElement.innerText = `Processing: ${counter}`;
-    if (counter <= 0) {
+    seconds--;
+    countdownNumber.textContent = seconds;
+    if(seconds <= 0) {
       clearInterval(interval);
-      countdownElement.innerText = "Transaction Complete! Redirecting to WhatsApp...";
-      // Open WhatsApp link
-      const whatsappLink = `https://wa.me/${info.whatsapp}?text=Hello, I am ${nameInput}. I have made my payment of ₦7,000 to ${info.name}. Please confirm.`;
-      window.open(whatsappLink, "_blank");
-      modal.style.display = "none";
+      countdownOverlay.style.display = "none";
+      // Open WhatsApp
+      const msg = encodeURIComponent(`Hello Admin, I have made the transfer.\nProduct: ${selectedProduct}\nPrice: ₦${selectedPrice}\nBank: ${selectedBank.name}\nPayer Name: ${nameInput.value}`);
+      window.open(`https://wa.me/${selectedBank.whatsapp.replace(/\D/g,'')}?text=${msg}`, "_blank");
     }
-  }, 1000); // 1 second per number
+  }, 1000);
 });
 
-// === OPTIONAL: ADD GAME VIDEO LINKS DYNAMICALLY ===
-const videoLinks = document.querySelectorAll(".video-iframe");
-videoLinks.forEach(iframe => {
-  const url = iframe.dataset.url;
-  iframe.src = url;
-});
+// ------------ YouTube Video ------------
+function setYouTubeVideo(url) {
+  youtubeFrame.src = url;
+}
