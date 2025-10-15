@@ -1,82 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KG DIMS Store</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KG^DIMS¥ — Demo Store</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- Intro Popup -->
-  <div id="popup" class="popup">
+  <!-- Intro / Animation -->
+  <div id="introPopup" class="popup">
     <div class="popup-card">
-      <h1>KG DIMS</h1>
-      <p>Welcome to our store! Loading products...</p>
-      <button class="btn primary" id="popupBtn">Enter Store</button>
+      <h1>KG^DIMS¥</h1>
+      <p id="typedArea"></p>
+      <button id="continueBtn" class="btn primary">Continue to Site</button>
     </div>
   </div>
 
-  <!-- Header -->
-  <header class="site-header">
-    <h1>KG DIMS Store</h1>
-    <p>We sell game products securely. Choose your product and bank to pay.</p>
-  </header>
+  <!-- Main Content -->
+  <div id="siteWrap" aria-hidden="true">
+    <header>
+      <h2>KG^DIMS¥ — Premium Digital Products</h2>
+    </header>
 
-  <!-- Products Section -->
-  <section id="products">
-    <h2>Available Products</h2>
-    <div class="cards">
+    <main>
+      <section class="products">
+        <h3>Available Services</h3>
 
-      <!-- Proxy Product -->
-      <div class="card">
-        <h3>Proxy</h3>
-        <p>Check our Proxy tool for games.</p>
-        <iframe width="320" height="180" src="https://youtube.com/shorts/MEnpOvFZmj4?si=tUoL-kJry_5U7-Jd" frameborder="0" allowfullscreen></iframe>
-        <button class="btn primary buy-btn" data-product="Proxy">Buy Proxy</button>
+        <!-- Proxy -->
+        <div class="card">
+          <h4>Proxy — Unlimited Edition</h4>
+          <p class="desc">Showcase account: Unlimited Diamonds, Level 100, Unlimited Skins, Unlimited Emotes.</p>
+          <button class="btn buy-btn" data-product="Proxy" data-price="7000" data-video="https://youtube.com/shorts/MEnpOvFZmj4?si=tUoL-kJry_5U7-Jd">Buy Proxy</button>
+        </div>
+
+        <!-- Headshot -->
+        <div class="card">
+          <h4>Headshot-Only Account</h4>
+          <p class="desc">Guest-login account tuned for headshot precision and smooth shooting.</p>
+          <button class="btn buy-btn" data-product="Headshot" data-price="6000" data-video="https://youtu.be/sUyxVAMjHFA?feature=shared">Buy Headshot</button>
+        </div>
+      </section>
+
+      <!-- Bank Selection Modal -->
+      <div id="bankModal" class="modal">
+        <div class="modal-content">
+          <h3>Select Bank for Payment</h3>
+          <button class="bank-btn" data-bank="moniepoint">Moniepoint</button>
+          <button class="bank-btn" data-bank="kuda">Kuda</button>
+          <button class="bank-btn" data-bank="palmpay">Palmpay</button>
+          <div id="accountDetails" class="account-details"></div>
+          <button id="confirmTransfer" class="btn primary">I've Made Transfer</button>
+        </div>
       </div>
 
-      <!-- Back Off Mode Product -->
-      <div class="card">
-        <h3>Back Off Mode</h3>
-        <p>Check the game back off mode.</p>
-        <iframe width="320" height="180" src="https://youtu.be/sUyxVAMjHFA?feature=shared" frameborder="0" allowfullscreen></iframe>
-        <button class="btn primary buy-btn" data-product="Back Off Mode">Buy Back Off Mode</button>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Bank Modal -->
-  <div id="bankModal" class="modal">
-    <div class="modal-content">
-      <span class="modal-close" id="modalClose">&times;</span>
-      <h3>Select Bank</h3>
-      <div class="form-row">
-        <label for="bankSelect">Choose Bank:</label>
-        <select id="bankSelect">
-          <option value="">--Select--</option>
-          <option value="moniepoint">Moniepoint</option>
-          <option value="palmpay">Palmpay</option>
-          <option value="kuda">Kuda</option>
-        </select>
-      </div>
-      <button class="btn primary" id="confirmBank">Confirm Bank</button>
-
-      <div id="accountDetails" class="account-details">
-        <p id="bankInfo"></p>
-      </div>
-    </div>
+      <!-- YouTube Video Section -->
+      <section id="videoSection">
+        <iframe id="productVideo" width="100%" height="360" src="" frameborder="0" allowfullscreen></iframe>
+      </section>
+    </main>
   </div>
 
-  <!-- Countdown Overlay -->
-  <div id="countdownOverlay" class="countdown-overlay">
-    <div class="countdown-card">
-      <h2>Processing Payment...</h2>
-      <div class="count-num" id="countdownNum">20</div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
