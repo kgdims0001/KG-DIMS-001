@@ -6,62 +6,46 @@
 <title>KG^DIMS¥ — Demo Store</title>
 <style>
   :root {
-    --bg: #08080a; --card: #0f0f11; --muted: #bfc5cc;
-    --accent1: #00e5ff; --accent2: #b84dff; --text: #e7e7e9;
+    --bg:#08080a; --card:#0f0f11; --muted:#bfc5cc;
+    --accent1:#00e5ff; --accent2:#b84dff; --text:#e7e7e9;
   }
-  * { box-sizing: border-box; margin:0; padding:0; }
-  body { font-family: Inter, Arial, sans-serif; background: var(--bg); color: var(--text); }
-  a { color: inherit; text-decoration: none; }
-  button { cursor: pointer; font-family: inherit; }
-  .wrap { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
-
-  header { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.1); }
-  h1 { font-size: 28px; margin-bottom:10px; }
-  .lead { color: var(--muted); margin-bottom:15px; }
-
-  .hero { margin-top:20px; }
-  .cta-row { display:flex; gap:10px; }
-
-  .products { margin-top:30px; }
-  .cards { display:grid; grid-template-columns: 1fr 1fr; gap:15px; }
-  .card { background: var(--card); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.05); }
-  .card-actions { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
-  .btn { padding:8px 14px; border-radius:8px; background:#1f1f23; border:none; color:var(--text); }
-  .btn.primary { background: linear-gradient(90deg,var(--accent1),var(--accent2)); color:#05060a; font-weight:700; }
-  .btn.outline { background:transparent; border:1px solid rgba(255,255,255,0.08); }
-
-  .modal { display:none; position:fixed; inset:0; justify-content:center; align-items:center; background: rgba(0,0,0,0.7); z-index:100; }
-  .modal-content { background: var(--card); padding:20px; border-radius:12px; width:100%; max-width:500px; }
-  .modal-close { float:right; border:none; background:transparent; color:#bbb; font-size:22px; cursor:pointer; }
-
-  input, select { width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:#0a0a0c; color:var(--text); margin-bottom:10px; }
-
-  .youtube-video { margin-top:10px; width:100%; aspect-ratio:16/9; }
-
-  .admin-login { max-width:400px; margin:50px auto; padding:20px; background:var(--card); border-radius:12px; border:1px solid rgba(255,255,255,0.05); }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);}
+  button{cursor:pointer;font-family:inherit;}
+  .wrap{max-width:1000px;margin:20px auto;padding:0 15px;}
+  header{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
+  h1{font-size:28px;margin-bottom:10px;}
+  .lead{color:var(--muted);margin-bottom:15px;}
+  .hero{margin-top:20px;}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px;}
+  .card{background:var(--card);padding:15px;border-radius:12px;border:1px solid rgba(255,255,255,0.05);}
+  .card-actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;}
+  .btn{padding:8px 14px;border-radius:8px;background:#1f1f23;border:none;color:var(--text);}
+  .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#05060a;font-weight:700;}
+  .btn.outline{background:transparent;border:1px solid rgba(255,255,255,0.08);}
+  .modal{display:none;position:fixed;inset:0;justify-content:center;align-items:center;background: rgba(0,0,0,0.7);z-index:100;}
+  .modal-content{background:var(--card);padding:20px;border-radius:12px;width:100%;max-width:500px;}
+  .modal-close{float:right;border:none;background:transparent;color:#bbb;font-size:22px;cursor:pointer;}
+  input, select, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:#0a0a0c;color:var(--text);margin-bottom:10px;}
+  .youtube-video{margin-top:10px;width:100%;aspect-ratio:16/9;}
+  .timer{font-size:48px;text-align:center;margin:20px 0;color:var(--accent1);}
 </style>
 </head>
 <body>
 
 <div class="wrap">
-
-  <!-- Header -->
   <header>
     <h1>KG^DIMS¥ — Demo Store</h1>
     <button id="adminLoginBtn" class="btn outline">Admin Login</button>
   </header>
 
-  <!-- Hero -->
   <div class="hero">
     <p class="lead">Welcome to KG^DIMS¥ store! Choose a product and complete your purchase securely via WhatsApp.</p>
   </div>
 
-  <!-- Products -->
   <section class="products">
     <h2>Available Products</h2>
-    <div class="cards" id="productsContainer">
-      <!-- Products will be dynamically loaded here -->
-    </div>
+    <div class="cards" id="productsContainer"></div>
   </section>
 </div>
 
@@ -69,80 +53,52 @@
 <div id="checkoutModal" class="modal">
   <div class="modal-content">
     <button class="modal-close" id="closeCheckout">×</button>
-    <h3>Checkout</h3>
-    <p id="checkoutProductName"></p>
-    <input type="text" id="payerName" placeholder="Your Name Used in Transfer">
-    <select id="bankSelect">
-      <option value="">-- Select Bank --</option>
-      <option value="kuda">Kuda</option>
-      <option value="moniepoint">Moniepoint</option>
-      <option value="palmpay">Palmpay</option>
-    </select>
-    <button class="btn primary" id="confirmPurchase">Confirm & Contact Admin</button>
-  </div>
-</div>
+    <h3 id="checkoutProductName"></h3>
 
-<!-- Admin Login Modal -->
-<div id="adminModal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" id="closeAdmin">×</button>
-    <h3>Admin Login</h3>
-    <input type="email" id="adminEmail" placeholder="Email">
-    <input type="password" id="adminPassword" placeholder="Password">
-    <input type="text" id="verificationCode" placeholder="Verification Code">
-    <button class="btn primary" id="adminLoginConfirm">Login</button>
-  </div>
-</div>
+    <div id="checkoutForm">
+      <input type="text" id="payerName" placeholder="Your Name Used in Transfer">
+      <select id="bankSelect">
+        <option value="">-- Select Bank --</option>
+        <option value="kuda">Kuda</option>
+        <option value="moniepoint">Moniepoint</option>
+        <option value="palmpay">Palmpay</option>
+      </select>
+      <button class="btn primary" id="startCountdownBtn">Start Purchase</button>
+    </div>
 
-<!-- Admin Add Product Modal -->
-<div id="addProductModal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" id="closeAddProduct">×</button>
-    <h3>Add New Product</h3>
-    <input type="text" id="newProductTitle" placeholder="Product Title">
-    <textarea id="newProductDesc" placeholder="Product Description"></textarea>
-    <input type="number" id="newProductPrice" placeholder="Price (₦)">
-    <input type="text" id="newProductVideo" placeholder="YouTube URL (optional)">
-    <input type="text" id="newProductGameMode" placeholder="Game Mode Name">
-    <button class="btn primary" id="addProductBtn">Add Product</button>
+    <div id="countdownSection" style="display:none;">
+      <p>Hold tight! Preparing your account info...</p>
+      <div class="timer" id="countdownTimer">20</div>
+      <button class="btn primary" id="showAccountBtn" style="display:none;">Show Account</button>
+      <div id="accountInfo" style="display:none;margin-top:10px;"></div>
+    </div>
   </div>
 </div>
 
 <script>
-/* --------- Sample Products --------- */
 let products = [
-  {
-    title: "Proxy — Unlimited Edition",
-    desc: "Showcase account: Unlimited Diamonds, Level 100, Unlimited Skins.",
-    price: 7000,
-    video: "",
-    gameMode: "Free Fire"
-  },
-  {
-    title: "Headshot-Only Account",
-    desc: "Guest-login account tuned for headshot precision and smooth shooting.",
-    price: 6000,
-    video: "",
-    gameMode: "Free Fire"
-  }
+  {title:"Free Fire Account", desc:"Unlimited diamonds, Level 100", price:7000, video:"", gameMode:"Free Fire"}
 ];
 
-/* Admin Credentials */
-const ADMIN_EMAIL = "kgdims0001@gmail.com";
-const ADMIN_PASSWORD = "@Password2224";
-const ADMIN_CODE = ["2203", "2224"];
+/* Admin credentials (not used in this demo) */
 const ADMIN_WHATSAPP = "+2349153882605";
 
-/* --------- Functions --------- */
-const productsContainer = document.getElementById("productsContainer");
+/* Bank Details (hidden until countdown finishes) */
+const BANKS = {
+  kuda:{name:"Kuda Microfinance Bank", account:"2081794843", owner:"DUMOYE, DESTINY ABDUL QUADRI"},
+  moniepoint:{name:"Moniepoint MFB", account:"9014690789", owner:"ABDUL QUADRI DESTINY DUMOYE"},
+  palmpay:{name:"Palmpay", account:"9030516292", owner:"Miracle Chika"}
+};
 
-function renderProducts() {
-  productsContainer.innerHTML = "";
-  products.forEach((p, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
+/* Render products */
+const productsContainer = document.getElementById("productsContainer");
+function renderProducts(){
+  productsContainer.innerHTML="";
+  products.forEach((p,i)=>{
+    const card=document.createElement("div");
+    card.className="card";
     let videoHTML = p.video ? `<iframe class="youtube-video" src="${p.video}" frameborder="0" allowfullscreen></iframe>` : "";
-    card.innerHTML = `
+    card.innerHTML=`
       <h3>${p.title}</h3>
       <p>${p.desc}</p>
       <p>Game Mode: ${p.gameMode}</p>
@@ -154,75 +110,67 @@ function renderProducts() {
     productsContainer.appendChild(card);
   });
 }
+renderProducts();
 
-/* --------- Checkout Modal --------- */
+/* Checkout modal logic */
 const checkoutModal = document.getElementById("checkoutModal");
 const checkoutProductName = document.getElementById("checkoutProductName");
 const payerName = document.getElementById("payerName");
 const bankSelect = document.getElementById("bankSelect");
+const startCountdownBtn = document.getElementById("startCountdownBtn");
+const countdownSection = document.getElementById("countdownSection");
+const countdownTimer = document.getElementById("countdownTimer");
+const showAccountBtn = document.getElementById("showAccountBtn");
+const accountInfo = document.getElementById("accountInfo");
 
-function openCheckoutModal(index) {
+let selectedProductIndex;
+
+function openCheckoutModal(index){
+  selectedProductIndex = index;
   const product = products[index];
   checkoutProductName.textContent = `${product.title} — ₦${product.price}`;
   checkoutModal.style.display = "flex";
-  checkoutModal.dataset.productIndex = index;
+  document.getElementById("checkoutForm").style.display = "block";
+  countdownSection.style.display = "none";
+  accountInfo.style.display = "none";
+  showAccountBtn.style.display = "none";
 }
 document.getElementById("closeCheckout").onclick = ()=>{checkoutModal.style.display="none";}
 
-/* Confirm Purchase */
-document.getElementById("confirmPurchase").onclick = ()=>{
-  const index = checkoutModal.dataset.productIndex;
-  const product = products[index];
+/* Countdown logic */
+startCountdownBtn.onclick = ()=>{
   if(!payerName.value || !bankSelect.value){
-    alert("Enter your name and choose a bank");
+    alert("Enter your name and select a bank first!");
     return;
   }
-  const message = `Hello Admin, I have made a transfer.\nProduct: ${product.title}\nAmount: ₦${product.price}\nBank: ${bankSelect.value}\nPayer Name: ${payerName.value}`;
-  window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`, "_blank");
-  checkoutModal.style.display="none";
-  payerName.value=""; bankSelect.value="";
+  document.getElementById("checkoutForm").style.display="none";
+  countdownSection.style.display="block";
+  let counter = 20;
+  countdownTimer.textContent = counter;
+  const timerInterval = setInterval(()=>{
+    counter--;
+    countdownTimer.textContent = counter;
+    if(counter<=0){
+      clearInterval(timerInterval);
+      showAccountBtn.style.display="block";
+    }
+  },1000);
 }
 
-/* --------- Admin Login --------- */
-const adminModal = document.getElementById("adminModal");
-document.getElementById("adminLoginBtn").onclick = ()=>{adminModal.style.display="flex";}
-document.getElementById("closeAdmin").onclick = ()=>{adminModal.style.display="none";}
+/* Show account and auto open WhatsApp */
+showAccountBtn.onclick = ()=>{
+  const bankKey = bankSelect.value;
+  const bank = BANKS[bankKey];
+  accountInfo.innerHTML=`<p>Bank: ${bank.name}</p><p>Account Number: ${bank.account}</p><p>Account Name: ${bank.owner}</p>`;
+  accountInfo.style.display="block";
 
-document.getElementById("adminLoginConfirm").onclick = ()=>{
-  const email = document.getElementById("adminEmail").value;
-  const password = document.getElementById("adminPassword").value;
-  const code = document.getElementById("verificationCode").value;
-  if(email === ADMIN_EMAIL && password === ADMIN_PASSWORD && ADMIN_CODE.includes(code)){
-    adminModal.style.display="none";
-    openAddProductModal();
-  } else { alert("Invalid credentials"); }
+  // Auto open WhatsApp after showing account
+  const product = products[selectedProductIndex];
+  const message = `Hello Admin, I have made a transfer.\nProduct: ${product.title}\nAmount: ₦${product.price}\nBank: ${bank.name}\nPayer Name: ${payerName.value}`;
+  setTimeout(()=>{
+    window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`, "_blank");
+  }, 2000); // 2 seconds delay
 }
-
-/* --------- Admin Add Product Modal --------- */
-const addProductModal = document.getElementById("addProductModal");
-document.getElementById("closeAddProduct").onclick = ()=>{addProductModal.style.display="none";}
-function openAddProductModal(){ addProductModal.style.display="flex"; }
-
-document.getElementById("addProductBtn").onclick = ()=>{
-  const title = document.getElementById("newProductTitle").value;
-  const desc = document.getElementById("newProductDesc").value;
-  const price = parseInt(document.getElementById("newProductPrice").value);
-  const video = document.getElementById("newProductVideo").value;
-  const gameMode = document.getElementById("newProductGameMode").value || "More games coming soon";
-  if(!title || !desc || !price){ alert("Enter all required fields"); return; }
-  products.push({title, desc, price, video, gameMode});
-  renderProducts();
-  addProductModal.style.display="none";
-  document.getElementById("newProductTitle").value="";
-  document.getElementById("newProductDesc").value="";
-  document.getElementById("newProductPrice").value="";
-  document.getElementById("newProductVideo").value="";
-  document.getElementById("newProductGameMode").value="";
-}
-
-/* --------- Initial Render --------- */
-renderProducts();
-
 </script>
 </body>
 </html>
