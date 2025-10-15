@@ -1,1 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KG^DIMS¥ — Premium Services</title>
+<style>
+  :root{
+    --bg:#08080a; --card:#0f0f11; --muted:#bfc5cc; 
+    --accent1:#00e5ff; --accent2:#b84dff; 
+    --moneycolor:#1E90FF; --palmpaycolor:#9b59b6; --kudacolor:#8e44ad;
+    --text:#e7e7e9;
+  }
+  body{margin:0;font-family:Arial, sans-serif;background:var(--bg);color:var(--text);}
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;cursor:pointer;padding:10px 14px;border-radius:8px;border:none;color:#fff;margin:4px 0;}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px;}
+  header{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.1);}
+  h1,h2,h3{margin:6px 0;}
+  .product-card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:16px;}
+  .product-card video{width:100%;border-radius:8px;margin-bottom:10px;}
+  .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));}
+  .bank-btn{margin-right:8px;}
+  .hidden{display:none;}
+  .countdown-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--accent1);z-index:9999;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>KG^DIMS¥ — Premium Gaming Services</h1>
+  </header>
 
+  <section id="products">
+    <!-- Proxy -->
+    <div class="product-card" id="proxyCard">
+      <h2>Proxy — Unlimited Edition</h2>
+      <p>Showcase account: Unlimited Diamonds, Level 100, Unlimited Skins, Unlimited Emotes.</p>
+      <video src="https://youtube.com/shorts/MEnpOvFZmj4?si=tUoL-kJry_5U7-Jd" controls></video>
+      <button class="btn-primary" onclick="buyProduct('Proxy')">Buy Proxy</button>
+    </div>
+
+    <!-- Backoff Mode -->
+    <div class="product-card" id="backoffCard">
+      <h2>Backoff Mode</h2>
+      <p>Premium backoff mode for smooth gameplay.</p>
+      <video src="https://youtu.be/sUyxVAMjHFA?feature=shared" controls></video>
+      <button class="btn-primary" onclick="buyProduct('Backoff Mode')">Buy Backoff</button>
+    </div>
+  </section>
+</div>
+
+<!-- Bank selection modal -->
+<div id="buyModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;z-index:999;">
+  <h2 id="modalTitle"></h2>
+  <div id="bankButtons" style="margin:16px 0;">
+    <button class="bank-btn" style="background:var(--moneycolor)" onclick="selectBank('MoneyPoint')">MoneyPoint</button>
+    <button class="bank-btn" style="background:var(--palmpaycolor)" onclick="selectBank('Palmpay')">Palmpay</button>
+    <button class="bank-btn" style="background:var(--kudacolor)" onclick="selectBank('Kuda')">Kuda</button>
+  </div>
+  <div id="bankDetails" class="hidden" style="margin-top:16px;text-align:center;">
+    <p id="bankInfo"></p>
+    <input type="text" id="payerName" placeholder="Your Name" style="padding:10px;border-radius:8px;border:none;margin-top:8px;width:200px;">
+    <button class="btn-primary" style="margin-top:12px;" onclick="confirmTransfer()">I've Made My Transfer</button>
+  </div>
+  <button style="margin-top:12px;" onclick="closeModal()">Cancel</button>
+</div>
+
+<!-- Countdown overlay -->
+<div id="countdownOverlay" class="countdown-overlay hidden">
+  <div id="countdownText">20</div>
+</div>
+
+<script>
+const BANKS = {
+  MoneyPoint:{color:'#1E90FF', name:'ABDUL QUADRI DESTINY DUMOYE', number:'+234 915 388 2605'},
+  Palmpay:{color:'#9b59b6', name:'Miracle Chika', number:'+234 915 952 9768'},
+  Kuda:{color:'#8e44ad', name:'DUMOYE, DESTINY ABDUL QUADRI', number:'+234 2081794843'}
+};
+
+let currentProduct='';
+
+function buyProduct(product){
+  currentProduct = product;
+  document.getElementById('modalTitle').innerText = 'Buy ' + product;
+  document.getElementById('buyModal').classList.remove('hidden');
+  document.getElementById('bankDetails').classList.add('hidden');
+}
+
+function selectBank(bank){
+  const info = BANKS[bank];
+  document.getElementById('bankInfo').innerHTML = `
+    Bank: ${bank}<br>
+    Account Name: ${info.name}<br>
+    WhatsApp: ${info.number}
+  `;
+  document.getElementById('bankDetails').classList.remove('hidden');
+}
+
+function confirmTransfer(){
+  const payer = document.getElementById('payerName').value.trim();
+  if(!payer){ alert('Enter your name'); return; }
+  document.getElementById('buyModal').classList.add('hidden');
+  startCountdown(20);
+}
+
+function closeModal(){
+  document.getElementById('buyModal').classList.add('hidden');
+}
+
+function startCountdown(seconds){
+  const overlay = document.getElementById('countdownOverlay');
+  const text = document.getElementById('countdownText');
+  overlay.classList.remove('hidden');
+  let counter = seconds;
+  text.innerText = counter;
+  const interval = setInterval(()=>{
+    counter--;
+    text.innerText = counter;
+    if(counter<=0){
+      clearInterval(interval);
+      overlay.classList.add('hidden');
+      openWhatsApp();
+    }
+  },1000);
+}
+
+function openWhatsApp(){
+  const bankInfo = document.getElementById('bankInfo').innerText;
+  const payer = document.getElementById('payerName').value.trim();
+  const message = encodeURIComponent(`Hello, I made a transfer for ${currentProduct}. My name: ${payer}. ${bankInfo}`);
+  let number='';
+  if(bankInfo.includes('MoneyPoint')) number=BANKS.MoneyPoint.number;
+  else if(bankInfo.includes('Palmpay')) number=BANKS.Palmpay.number;
+  else number=BANKS.Kuda.number;
+  window.open('https://wa.me/'+number+'?text='+message,'_blank');
+}
+</script>
+</body>
+</html>
