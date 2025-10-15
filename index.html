@@ -1,1 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KG^DIMS¥ — Demo Store</title>
+<style>
+  /* ----- Basic Styles ----- */
+  body{font-family:Arial,sans-serif;background:#0a0a0d;color:#e7e7e9;margin:0;padding:0;}
+  header, footer{padding:12px 24px;background:#111;}
+  header h1, footer p{margin:0;}
+  .wrap{max-width:1000px;margin:20px auto;padding:0 16px;}
+  button{padding:8px 12px;border:none;border-radius:6px;cursor:pointer;}
+  .btn-primary{background:#00e5ff;color:#05060a;font-weight:bold;}
+  .btn-outline{background:transparent;border:1px solid #00e5ff;color:#00e5ff;}
+  .products{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;}
+  .card{background:#1a1a1e;padding:14px;border-radius:12px;}
+  .card h3{margin-top:0;}
+  input, select{padding:8px;border-radius:6px;border:1px solid #555;background:#111;color:#fff;width:100%;margin-bottom:8px;}
+  #adminLogin{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:999;}
+  #adminLogin .modal{background:#111;padding:20px;border-radius:12px;width:300px;}
+  #newProductForm{display:none;margin-top:20px;}
+  iframe{width:100%;height:180px;border:none;border-radius:8px;}
+</style>
+</head>
+<body>
 
+<header>
+  <h1>KG^DIMS¥ — Demo Store</h1>
+  <button id="adminBtn" class="btn-outline">Admin Login</button>
+</header>
+
+<div class="wrap">
+
+  <!-- Search Bar -->
+  <input type="text" id="searchInput" placeholder="Search products...">
+
+  <!-- Products Grid -->
+  <div class="products" id="productsContainer">
+    <!-- Products will be injected here dynamically -->
+  </div>
+
+  <!-- Admin: Add New Product -->
+  <div id="newProductForm">
+    <h3>Add New Product</h3>
+    <input type="text" id="newTitle" placeholder="Product Title">
+    <textarea id="newDesc" placeholder="Product Description"></textarea>
+    <input type="number" id="newPrice" placeholder="Price (₦)">
+    <input type="text" id="newYouTube" placeholder="YouTube Video URL">
+    <button id="addProductBtn" class="btn-primary">Add Product</button>
+  </div>
+</div>
+
+<footer>
+  <p>Bank: Kuda Microfinance Bank | Account: 2081794843 | Name: DUMOYE, DESTINY ABDUL QUADRI | WhatsApp: +2349153882605</p>
+  <p>Bank: Moniepoint MFB | Account: 9014690789 | Name: ABDUL QUADRI DESTINY DUMOYE | WhatsApp: +2349153882605</p>
+  <p>Bank: Palmpay | Account: 9030516292 | Name: MIRACLE CHIKA | WhatsApp: +2349159529768</p>
+</footer>
+
+<!-- Admin Login Modal -->
+<div id="adminLogin">
+  <div class="modal">
+    <h3>Admin Login</h3>
+    <input type="email" id="adminEmail" placeholder="Email">
+    <input type="password" id="adminPass" placeholder="Password">
+    <button id="loginBtn" class="btn-primary">Login</button>
+    <button id="closeLogin" class="btn-outline">Close</button>
+  </div>
+</div>
+
+<script>
+  // ----- Admin credentials -----
+  const ADMIN_EMAIL = "kgdims0001@gmail.com";
+  const ADMIN_PASS = "@Password2224";
+
+  // ----- Product List -----
+  let products = [
+    {
+      title:"Proxy — Unlimited Edition",
+      desc:"Showcase account: Unlimited Diamonds, Level 100, Unlimited Skins. Not for live gameplay.",
+      price:7000,
+      video:"https://www.youtube.com/embed/dQw4w9WgXcQ"
+    },
+    {
+      title:"Headshot-Only Account",
+      desc:"Guest-login account tuned for headshot precision and smooth shooting.",
+      price:6000,
+      video:"https://www.youtube.com/embed/dQw4w9WgXcQ"
+    }
+  ];
+
+  const productsContainer = document.getElementById("productsContainer");
+
+  function renderProducts(list){
+    productsContainer.innerHTML="";
+    list.forEach(p=>{
+      const card = document.createElement("div");
+      card.className="card";
+      card.innerHTML=`
+        <h3>${p.title}</h3>
+        <p>${p.desc}</p>
+        <p>₦${p.price}</p>
+        <iframe src="${p.video}" allowfullscreen></iframe>
+        <button class="btn-primary" onclick="alert('Contact admin to complete payment for ${p.title}')">Buy Now</button>
+      `;
+      productsContainer.appendChild(card);
+    });
+  }
+
+  renderProducts(products);
+
+  // ----- Search functionality -----
+  const searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("input",()=>{
+    const q = searchInput.value.toLowerCase();
+    renderProducts(products.filter(p=>p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)));
+  });
+
+  // ----- Admin Login -----
+  const adminBtn = document.getElementById("adminBtn");
+  const adminLogin = document.getElementById("adminLogin");
+  const loginBtn = document.getElementById("loginBtn");
+  const closeLogin = document.getElementById("closeLogin");
+  const newProductForm = document.getElementById("newProductForm");
+  const addProductBtn = document.getElementById("addProductBtn");
+
+  adminBtn.addEventListener("click",()=>{adminLogin.style.display="flex";});
+  closeLogin.addEventListener("click",()=>{adminLogin.style.display="none";});
+
+  loginBtn.addEventListener("click",()=>{
+    const email = document.getElementById("adminEmail").value;
+    const pass = document.getElementById("adminPass").value;
+    if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
+      alert("Admin login successful!");
+      adminLogin.style.display="none";
+      newProductForm.style.display="block";
+    } else {
+      alert("Incorrect email or password.");
+    }
+  });
+
+  addProductBtn.addEventListener("click",()=>{
+    const title = document.getElementById("newTitle").value;
+    const desc = document.getElementById("newDesc").value;
+    const price = document.getElementById("newPrice").value;
+    const video = document.getElementById("newYouTube").value;
+    if(!title||!desc||!price||!video){alert("Fill all fields");return;}
+    products.push({title,desc,price,video});
+    renderProducts(products);
+    document.getElementById("newTitle").value="";
+    document.getElementById("newDesc").value="";
+    document.getElementById("newPrice").value="";
+    document.getElementById("newYouTube").value="";
+  });
+
+</script>
+</body>
+</html>
